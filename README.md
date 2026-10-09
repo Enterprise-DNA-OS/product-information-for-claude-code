@@ -1,115 +1,79 @@
-<h1 align="center">Product Information for Claude Code</h1>
+# Product Information for Claude Code
 
-<p align="center">
-  <strong>The open-source product information system that is just a database and Claude Code.</strong>
-</p>
+Own your product catalogue, its channel checks and the evidence behind its claims. An MIT-licensed database and command library for manufacturers, distributors and brand owners. Runs with Claude Code, Codex, OpenCode or Cursor.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free. Try the fictional catalogue and import a mapped Pimberly CSV. | Your attributes, review rules, documents, web front end or different stack. | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
+| [Quick start](#quick-start) | [Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=pimberly&utm_medium=customise) | [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=pimberly&utm_medium=managed) |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Pimberly data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=pimberly">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/pimberly?utm_source=github&utm_medium=readme&utm_campaign=pimberly">How it works</a></td>
-  </tr>
-</table>
+## The catalogue meeting
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-pimberly">Instead of Pimberly</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Product Information for Claude Code does the job you pay Pimberly for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Pimberly dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Pimberly per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=pimberly).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+Five weekly rituals: collect supplier content, check channel completeness, review product claims, approve revised content and prepare a private channel export. The fictional Harbour Product Supply demo includes missing Australian retail content, a pending recycled-content claim, an overdue supplier request and a stale product.
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later on Windows or Linux:
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/product-information-for-claude-code.git
 cd product-information-for-claude-code
 npm install
 npm run demo
+npm test
+npm run pim -- weekly-review
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Local PGlite runs in .data/db and supports one process. DATABASE_URL selects Postgres 15 or later with verified TLS. For real records, select a fresh DATA_DIR, migrate and import without seeding. Shared use needs authenticated operators, restricted database roles and protected backups. Actor labels record attribution, not verified identity.
 
-### Use it with your own Postgres or Supabase
+29 CLI commands including help, plus 30 slash recipes. [Command reference](docs/cli.md). The same .claude/commands library serves every agent runtime through CLAUDE.md and AGENTS.md.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## Content approval follows the current revision
 
-## The commands
+A channel file includes only enabled products with an owner, every required attribute, current claim evidence records and a review of the current content revision. Changing a product or claim invalidates earlier reviews. Locale and channel content overrides shared values; an explicit blank blocks a required field. No translation or variant inheritance is implied.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+The owner must check that claims in descriptions are recorded or removed before approving content. Record checks cannot prove a statement is true. [Rules and limits](docs/compliance.md).
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Ten questions beyond a fixed report
 
-## Instead of pimberly
+Pimberly offers reporting and workflows. These are questions the shipped commands answer, not unsupported claims that Pimberly cannot answer them.
 
-<!-- TODO(author): how to bring data across from Pimberly; link docs/replace-pimberly.md -->
+1. Which enabled products still lack content for Australia? `readiness --channel=au-retail`
+2. Which products are ready for the New Zealand channel? `release-queue --channel=nz-web`
+3. Which claims are waiting for evidence? `compliance`
+4. Which claims have reached their next review date? `compliance`
+5. Which supplier tasks are overdue? `attention`
+6. Which products have no named owner? `attention`
+7. Which old products need their content checked? `attention`
+8. What did the last recorded content change contain? `history --product=BOT-750`
+9. Which channel needs a fresh review after an edit? `readiness`
+10. What does each supplier still owe us? `supplier-chase`
 
-## Architecture
+## Your first hour: ten things to ask for
 
-```
-product-information-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+1. Put our business name, logo and colours on the product review sheet.
+2. Show what blocks the Australian channel.
+3. Show what is ready for New Zealand.
+4. Draft a supplier follow-up from overdue tasks.
+5. Record evidence for a claim after I check it.
+6. Add our packaging attribute through /customise.
+7. Add a catalogue-owner report through /new-view.
+8. Rehearse our Pimberly export with a dry run.
+9. Compare a product's current values with its change history.
+10. Prepare a private channel file for my review.
 
-## Built for coding agents
+## Documents and read-only views
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+brand.json controls business name, logo and colours. npm run docs creates a product information review sheet per product and a supplier content brief for products with open requests. npm run view creates the catalogue meeting and supplier follow-up reports. Open the HTML files locally or print them to PDF. These are internal review documents, not approved product labels. Drafts, snapshots and feeds remain private. [Why no front end](docs/why-no-front-end.md).
 
-## Contributing
+## Switch from Pimberly
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+[Replacement guide](docs/replace-pimberly.md). Import a mapped row-per-product CSV in one command. Preserve every original field, roll back malformed batches and skip identical repeats. Changed source rows require explicit reconciliation. The base imports product content, not media files, inherited variants, approval history or live channel connections. Those requirements belong in the migration scope.
 
-## Want it installed and run for you?
+## Verification
 
-Enterprise DNA installs Product Information for Claude Code for your business, migrates your Pimberly data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+npm test uses an isolated database and exercises every CLI command, import rollback, repeat imports, ambiguity, channel overrides, evidence expiry, review invalidation, branded documents and exports. CI defines Windows and Linux runs and a disposable Postgres run. [Verification record](docs/verification.md).
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=pimberly)
-- Read more: [enterprisedna.co/omni/instead-of/pimberly](https://enterprisedna.co/omni/instead-of/pimberly?utm_source=github&utm_medium=readme&utm_campaign=pimberly)
-
-## License
-
-MIT. Copyright (c) 2026 Enterprise DNA.
+MIT licence. Not affiliated with Pimberly or Anthropic. Hosting and coding-agent use carry their own costs. [Research](docs/research.md). [Book 30 minutes with Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=pimberly&utm_medium=readme).

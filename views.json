@@ -1,13 +1,30 @@
 [
   {
-    "name": "week",
-    "title": "This week",
-    "subtitle": "Product Information for Claude Code: what needs attention, rendered by npm run view",
+    "name": "catalogue-week",
+    "title": "Catalogue readiness meeting",
+    "subtitle": "Fictional demo unless replaced with your own records",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Channel release status",
+        "sql": "SELECT sku,name,channel,missing_fields,claim_issues,reviewed,ready FROM release_queue ORDER BY sku,channel"
+      },
+      {
+        "title": "Attention",
+        "sql": "SELECT sku,issue,detail,owner,due_on FROM attention ORDER BY due_on NULLS LAST"
+      },
+      {
+        "title": "Claim evidence",
+        "sql": "SELECT sku,statement,issue,review_due FROM claim_issues ORDER BY sku"
+      }
+    ]
+  },
+  {
+    "name": "supplier-chase",
+    "title": "Supplier content follow-up",
+    "sections": [
+      {
+        "title": "Open tasks",
+        "sql": "SELECT p.supplier,p.sku,t.title,t.owner,t.due_on FROM tasks t JOIN products p ON p.id=t.product_id WHERE t.status='open' ORDER BY p.supplier,t.due_on"
       }
     ]
   }

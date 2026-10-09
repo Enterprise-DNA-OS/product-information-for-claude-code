@@ -1,0 +1,25 @@
+{
+  "sku": "Primary ID",
+  "name": "Name",
+  "family": "Family",
+  "supplier": "Supplier",
+  "owner": "Owner",
+  "attributes": [
+    {
+      "column": "Description",
+      "attribute": "description"
+    },
+    {
+      "column": "Material",
+      "attribute": "material"
+    },
+    {
+      "column": "Care",
+      "attribute": "care"
+    },
+    {
+      "column": "Barcode",
+      "attribute": "barcode"
+    }
+  ]
+}

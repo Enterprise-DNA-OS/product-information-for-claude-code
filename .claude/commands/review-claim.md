@@ -1,8 +1,8 @@
 ---
-description: Compliance for the product catalogue.
+description: Review claim for the product catalogue.
 ---
 
-Read CLAUDE.md. Run `node scripts/pim.mjs compliance --json` using the operator's real values in place of placeholders.
+Read CLAUDE.md. Run `node scripts/pim.mjs review-claim --claim=<id> --evidence="<evidence reference>" --reviewed-on=<YYYY-MM-DD> --review-due=<YYYY-MM-DD> --actor="<reviewer>" --json` using the operator's real values in place of placeholders.
 
 Read docs/compliance.md. Evidence references are not proof of truth. Distinguish internal review dates from legal requirements.
 

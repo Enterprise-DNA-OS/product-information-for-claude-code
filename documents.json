@@ -1,11 +1,43 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "product-sheet",
+    "title": "Product information review sheet",
+    "for_each": "SELECT id,sku FROM products ORDER BY sku",
+    "file": "sku",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Product",
+        "sql": "SELECT sku,name,family,supplier,owner,enabled,revision FROM products WHERE id=$1"
+      },
+      {
+        "title": "Product content",
+        "sql": "SELECT attribute,locale,channel,value FROM product_values WHERE product_id=$1 ORDER BY attribute,locale,channel"
+      },
+      {
+        "title": "Recorded claims",
+        "note": "Internal review sheet. Pending claims are not approved copy. Evidence references must be assessed by the owner.",
+        "sql": "SELECT statement,status,evidence,reviewer,reviewed_on,review_due FROM claims WHERE product_id=$1"
+      },
+      {
+        "title": "Release checks",
+        "sql": "SELECT channel,missing_fields,claim_issues,reviewed,ready FROM release_queue WHERE product_id=$1"
+      }
+    ]
+  },
+  {
+    "name": "content-brief",
+    "title": "Supplier content request brief",
+    "for_each": "SELECT id,sku FROM products WHERE EXISTS(SELECT 1 FROM tasks WHERE product_id=products.id AND status='open') ORDER BY sku",
+    "file": "sku",
+    "sections": [
+      {
+        "title": "Supplier",
+        "sql": "SELECT sku,name,supplier,owner FROM products WHERE id=$1"
+      },
+      {
+        "title": "Open requests",
+        "sql": "SELECT title,owner,due_on FROM tasks WHERE product_id=$1 AND status='open' ORDER BY due_on"
+      }
     ]
   }
 ]
